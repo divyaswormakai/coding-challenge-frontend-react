@@ -27,20 +27,24 @@ export async function getOrdersList() {
     const targetRows = targetResponse.data.values;
     if (orderRows.length && targetRows.length) {
       return {
-        orders: orderRows.map((order) => {
-          return {
-            orderNumber: order[0],
-            orderDate: order[1],
-            orderProduct: order[2],
-            orderVolume: order[3],
-          };
-        }),
-        targets: targetRows.map((target) => {
-          return {
-            targetMonth: target[0],
-            targetValue: target[1],
-          };
-        }),
+        orders: orderRows
+          .map((order) => {
+            return {
+              orderNumber: order[0],
+              orderDate: order[1],
+              orderProduct: order[2],
+              orderVolume: order[3],
+            };
+          })
+          .slice(1),
+        targets: targetRows
+          .map((target) => {
+            return {
+              targetMonth: target[0],
+              targetValue: target[1],
+            };
+          })
+          .slice(1),
       };
     }
   } catch (err) {
