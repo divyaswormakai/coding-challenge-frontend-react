@@ -8,11 +8,24 @@ export default function Home() {
     orders: [],
     targets: [],
   });
+
   useEffect(() => {
     getSheetsData();
+    const interval = setInterval(() => {
+      getSheetsData();
+    }, 1000 * 60); // Refresh every 1 minute
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const getSheetsData = async () => {
+    setState((previous) => {
+      return {
+        ...previous,
+        name: "loading",
+      };
+    });
     const response = await fetch("/api/sheets");
     if (response && response.ok) {
       const json = await response.json();
