@@ -1,7 +1,10 @@
 export const convertToNumber = (text) => {
-  return text?.replaceAll("€", "");
+  return Number.parseFloat(
+    text?.replaceAll("€", "")?.replaceAll(".", "")?.replaceAll(",", ".")?.trim()
+  );
 };
 
-export const converToCurrencyText = (number) => {
-  return `${number} €`;
+export const convertToCurrencyText = (number) => {
+  console.log("Ead time");
+  return `${number?.toLocaleString()?.replaceAll(",", ".")},00€`;
 };

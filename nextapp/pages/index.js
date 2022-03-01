@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Row, Col, ProgressBar, Table } from "react-bootstrap";
 import dayjs from "dayjs";
 import Image from "next/image";
 
-import { convertToNumber } from "../utils/helper";
+import { convertToNumber, convertToCurrencyText } from "../utils/helper";
 import topRightImage from "../assets/top-right.svg";
 import Spinner from "../components/spinner";
+import ListingTable from "../components/listingtables";
+import TargetCounter from "../components/targetCounter";
+import TargetProgress from "../components/target-progress";
 
 export default function Home() {
   const [state, setState] = useState({
@@ -39,16 +42,28 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedMonthIndex !== -1 && state.name === "complete") {
-      const filteredOrders = state.orders.filter(
-        (order) =>
+      const filteredOrders = [];
+      const totalValue = 0;
+      for (const order of state.orders) {
+        if (
           dayjs(order.formattedDate).format("MMMM") ===
           state?.targets[selectedMonthIndex]?.targetMonth
-      );
+        ) {
+          filteredOrders.push(order);
+          totalValue += order.formattedVolume;
+        }
+      }
+
       setState((previous) => {
         return {
           ...previous,
           currentOrders: filteredOrders,
-          top5Orders: filteredOrders.slice(0, 5),
+          top5Orders: filteredOrders
+            .sort(
+              (first, second) => second.formattedVolume - first.formattedVolume
+            )
+            .slice(0, 5),
+          currentOrdersTotal: totalValue || 0,
         };
       });
     }
@@ -67,7 +82,12 @@ export default function Home() {
       const { orders, targets } = json.data;
       setState({
         name: "complete",
-        orders,
+        orders: orders?.map((order) => {
+          return {
+            ...order,
+            formattedVolume: convertToNumber(order.orderVolume),
+          };
+        }),
         targets,
       });
     } else {
@@ -131,100 +151,12 @@ export default function Home() {
               </div>
             </Col>
           </Row>
-          <Row className="px-4 my-5">
-            <p className="fs-150 font-roboto fw-bold text-wrap word-break">
-              {convertToNumber(state?.targets[selectedMonthIndex]?.targetValue)}{" "}
-              €
-            </p>
-          </Row>
-          <Row className="px-4 my-4">
-            <div className="z-2 position-relative">
-              <ProgressBar
-                now={60}
-                max={120}
-                className="target-bar"
-                style={{ backgroundColor: "#2f2f2f" }}
-              />
-              <div
-                className="position-absolute d-flex flex-column align-items-center"
-                style={{
-                  zIndex: 4,
-                  left: "80%",
-                  top: "-75%",
-                }}
-              >
-                <p className="mb-0">
-                  {state?.targets[selectedMonthIndex]?.targetValue}
-                </p>
-                <div
-                  style={{
-                    height: 60,
-                    width: 3,
-                    background: "white",
-                  }}
-                />
-              </div>
-            </div>
-          </Row>
-          <Row className="my-4 ">
-            <Col xs={12} md={5}>
-              <div className="text-white p-2 ps-md-4 stat-card">
-                <Table responsive className="text-white">
-                  <thead className="header-row">
-                    <tr>
-                      <th>NR</th>
-                      <th>Date</th>
-                      <th>Product Name</th>
-                      <th>Order Volume</th>
-                    </tr>
-                    <tr></tr>
-                  </thead>
-                  <tbody>
-                    {state?.currentOrders?.map((order, index) => (
-                      <tr key={`Current order -${index}`} className="body-row">
-                        <td>{order.orderNumber}</td>
-                        <td>{order.orderDate}</td>
-                        <td>{order.orderProduct}</td>
-                        <td>{order.orderVolume}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            </Col>
-            <Col xs={12} md={7}>
-              <div className="text-white p-2 stat-card">
-                <Table responsive className="text-white">
-                  <thead className="header-row">
-                    <tr>
-                      <th colSpan={3}>Top 5 Products</th>
-                    </tr>
-                    <tr></tr>
-                  </thead>
-                  <tbody>
-                    {state?.currentOrders?.map((order, index) => (
-                      <tr key={`Current order -${index}`} className="body-row">
-                        <td width={"25%"}>
-                          {order.orderProduct?.slice(0, 15)}
-                        </td>
-                        <td width={"60%"}>
-                          <ProgressBar
-                            now={60}
-                            max={100}
-                            style={{
-                              backgroundColor: "transparent",
-                              marginTop: 3,
-                            }}
-                          />
-                        </td>
-                        <td width={"15%"}>{order.orderVolume}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            </Col>
-          </Row>
+          <TargetCounter value={state?.currentOrdersTotal} />
+          <TargetProgress
+            currentTotal={state?.currentOrdersTotal}
+            targetValue={state?.targets[selectedMonthIndex]?.targetValue}
+          />
+          <ListingTable state={state} />
         </div>
       )}
     </div>
