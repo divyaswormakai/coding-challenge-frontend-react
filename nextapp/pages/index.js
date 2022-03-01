@@ -55,14 +55,6 @@ export default function Home() {
         }
       }
 
-      console.log(
-        filteredOrders
-          .sort((first, second) =>
-            dayjs(first.formattedDate).isBefore(dayjs(second.formattedDate))
-          )
-          .map((item) => item.formattedDate)
-      );
-
       setState((previous) => {
         return {
           ...previous,
