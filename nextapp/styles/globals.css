@@ -13,4 +13,53 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+.font-roboto {
+  font-family: "Roboto", serif;
+}
+.font-montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+.font-source {
+  font-family: "Source Serif Pro", serif;
+}
+
+.word-break {
+  word-break: break-all;
+}
+
+.c-p {
+  cursor: default;
+}
+.c-p:hover {
+  cursor: pointer;
+}
+
+.timer-text {
+  min-width: 4ch;
+}
+
+.text-c4 {
+  color: #c4c4c4;
+}
+
+.fs-150 {
+  font-size: 150px;
+}
+
+.target-bar {
+  height: 2.75rem !important;
+}
+.th {
+  text-transform: uppercase;
+}
+
+.stat-card {
+  background-color: #26262c;
+}
+
+.body-row {
+  border-style: hidden !important;
 }

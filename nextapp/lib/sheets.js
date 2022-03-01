@@ -10,8 +10,6 @@ export async function getOrdersList() {
       target
     );
 
-    console.log(process.env.GOOGLE_SHEETS_CLIENT_EMAIL);
-
     const sheets = google.sheets({ version: "v4", auth: jwt });
     const ordersResponse = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SPREADSHEET_ID,
