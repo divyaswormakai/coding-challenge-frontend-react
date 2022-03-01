@@ -5,6 +5,5 @@ export const convertToNumber = (text) => {
 };
 
 export const convertToCurrencyText = (number) => {
-  console.log("Ead time");
   return `${number?.toLocaleString()?.replaceAll(",", ".")},00€`;
 };
