@@ -5,5 +5,5 @@ export const convertToNumber = (text) => {
 };
 
 export const convertToCurrencyText = (number) => {
-  return `${number?.toLocaleString()?.replaceAll(",", ".")},00€`;
+  return `${number?.toLocaleString()?.replaceAll(",", ".")},00 €`;
 };
