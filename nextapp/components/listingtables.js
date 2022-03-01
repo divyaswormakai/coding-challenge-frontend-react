@@ -9,10 +9,14 @@ const ListingTable = ({ state }) => {
           <Table responsive className="text-white">
             <thead className="header-row">
               <tr>
-                <th>NR</th>
-                <th>Date</th>
-                <th>Product Name</th>
-                <th>Order Volume</th>
+                <th className="font-source fw-normal text-uppercase">NR</th>
+                <th className="font-source fw-normal text-uppercase">Date</th>
+                <th className="font-source fw-normal text-uppercase">
+                  Product Name
+                </th>
+                <th className="font-source fw-normal text-uppercase text-end">
+                  Order Volume
+                </th>
               </tr>
               <tr></tr>
             </thead>
@@ -22,7 +26,7 @@ const ListingTable = ({ state }) => {
                   <td>{order.orderNumber}</td>
                   <td>{order.orderDate}</td>
                   <td>{order.orderProduct}</td>
-                  <td>{order.orderVolume}</td>
+                  <td className="text-end fw-bold">{order.orderVolume}</td>
                 </tr>
               ))}
             </tbody>
@@ -34,7 +38,12 @@ const ListingTable = ({ state }) => {
           <Table responsive className="text-white">
             <thead className="header-row">
               <tr>
-                <th colSpan={3}>Top 5 Products</th>
+                <th
+                  colSpan={3}
+                  className="font-source fw-normal text-uppercase"
+                >
+                  Top 5 Products
+                </th>
               </tr>
               <tr></tr>
             </thead>
@@ -52,7 +61,9 @@ const ListingTable = ({ state }) => {
                       }}
                     />
                   </td>
-                  <td width={"15%"}>{order.orderVolume}</td>
+                  <td width={"15%"} className="fw-bold">
+                    {order.orderVolume}
+                  </td>
                 </tr>
               ))}
             </tbody>
