@@ -63,3 +63,24 @@ a {
 .body-row {
   border-style: hidden !important;
 }
+
+.top-right-image {
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.z-2 {
+  z-index: 2;
+}
+
+.target-month {
+  width: 300px;
+}
+
+.month-select {
+  background-color: #26262c;
+  width: 40px;
+  font-size: 24px;
+  height: 40px;
+}

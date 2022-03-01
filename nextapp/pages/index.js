@@ -1,8 +1,11 @@
-import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, ProgressBar, Card, Table } from "react-bootstrap";
+import { Row, Col, ProgressBar, Table } from "react-bootstrap";
 import dayjs from "dayjs";
+import Image from "next/image";
+
 import { convertToNumber } from "../utils/helper";
+import topRightImage from "../assets/top-right.svg";
+
 export default function Home() {
   const [state, setState] = useState({
     name: "loading",
@@ -76,13 +79,16 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-black min-vh-100 min-vw-100 text-white ">
-      <div className=" min-vh-100  h-100 d-flex flex-column ">
+    <div className="bg-black min-vh-100 min-vw-100 text-white position-relative ">
+      <div className="position-absolute top-right-image">
+        <Image src={topRightImage} height={700} width={700} />
+      </div>
+      <div className=" min-vh-100  h-100 d-flex flex-column">
         <Row className="justify-content-between align-items-center p-4 my-2">
           <Col
             xs={{ span: 12, order: 1 }}
             md={{ span: 6, order: 2 }}
-            className="d-flex justify-content-end"
+            className="d-flex justify-content-start justify-content-md-end z-2"
           >
             <p className="fw-light text-c4">Refresh In</p>
             <p className="fw-bold timer-text ps-1">{timer}</p>
@@ -90,7 +96,7 @@ export default function Home() {
           <Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 1 }}>
             <p className="font-source">Order Dashboard</p>
             <div className="d-flex align-items-center">
-              <h3 className="fw-bold">
+              <h3 className="fw-bold target-month">
                 {state?.targets[selectedMonthIndex]?.targetMonth}
               </h3>
               <div className="d-flex">
@@ -100,9 +106,9 @@ export default function Home() {
                       Math.max(0, previous - 1)
                     )
                   }
-                  className="c-p"
+                  className="c-p month-select text-center mx-2"
                 >
-                  Left
+                  &#8249;
                 </div>
                 <div
                   onClick={() =>
@@ -110,9 +116,9 @@ export default function Home() {
                       Math.min(state?.targets?.length - 1, previous + 1)
                     )
                   }
-                  className="c-p"
+                  className="c-p month-select text-center mx-2"
                 >
-                  Right
+                  &#8250;
                 </div>
               </div>
             </div>
@@ -124,13 +130,37 @@ export default function Home() {
           </p>
         </Row>
         <Row className="px-4 my-4">
-          <div>
-            <ProgressBar now={80} max={120} className="target-bar" />
+          <div className="z-2 position-relative">
+            <ProgressBar
+              now={60}
+              max={120}
+              className="target-bar"
+              style={{ backgroundColor: "#2f2f2f" }}
+            />
+            <div
+              className="position-absolute d-flex flex-column align-items-center"
+              style={{
+                zIndex: 4,
+                left: "80%",
+                top: "-75%",
+              }}
+            >
+              <p className="mb-0">
+                {state?.targets[selectedMonthIndex]?.targetValue}
+              </p>
+              <div
+                style={{
+                  height: 60,
+                  width: 3,
+                  background: "white",
+                }}
+              />
+            </div>
           </div>
         </Row>
         <Row className="my-4 ">
           <Col xs={12} md={5}>
-            <div className="text-white p-2 stat-card">
+            <div className="text-white p-2 ps-md-4 stat-card">
               <Table responsive className="text-white">
                 <thead className="header-row">
                   <tr>
@@ -159,7 +189,7 @@ export default function Home() {
               <Table responsive className="text-white">
                 <thead className="header-row">
                   <tr>
-                    <th colSpan={2}>Top 5 Products</th>
+                    <th colSpan={3}>Top 5 Products</th>
                   </tr>
                   <tr></tr>
                 </thead>
@@ -167,7 +197,17 @@ export default function Home() {
                   {state?.currentOrders?.map((order, index) => (
                     <tr key={`Current order -${index}`} className="body-row">
                       <td width={"25%"}>{order.orderProduct?.slice(0, 15)}</td>
-                      <td width={"75%"}>{order.orderVolume}</td>
+                      <td width={"60%"}>
+                        <ProgressBar
+                          now={60}
+                          max={100}
+                          style={{
+                            backgroundColor: "transparent",
+                            marginTop: 3,
+                          }}
+                        />
+                      </td>
+                      <td width={"15%"}>{order.orderVolume}</td>
                     </tr>
                   ))}
                 </tbody>
