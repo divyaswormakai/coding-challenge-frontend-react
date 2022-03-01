@@ -41,7 +41,7 @@ export default function Home() {
     if (selectedMonthIndex !== -1 && state.name === "complete") {
       const filteredOrders = state.orders.filter(
         (order) =>
-          dayjs(order.orderDate, "DD.MM.YYYY").format("MMMM") ===
+          dayjs(order.formattedDate).format("MMMM") ===
           state?.targets[selectedMonthIndex]?.targetMonth
       );
       setState((previous) => {

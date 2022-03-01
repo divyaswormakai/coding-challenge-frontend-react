@@ -27,9 +27,11 @@ export async function getOrdersList() {
       return {
         orders: orderRows
           .map((order) => {
+            const dateSplit = order[1].split(".");
             return {
               orderNumber: order[0],
               orderDate: order[1],
+              formattedDate: `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`,
               orderProduct: order[2],
               orderVolume: order[3],
             };
