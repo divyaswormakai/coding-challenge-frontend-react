@@ -55,11 +55,21 @@ export default function Home() {
         }
       }
 
+      console.log(
+        filteredOrders
+          .sort((first, second) =>
+            dayjs(first.formattedDate).isBefore(dayjs(second.formattedDate))
+          )
+          .map((item) => item.formattedDate)
+      );
+
       setState((previous) => {
         return {
           ...previous,
-          currentOrders: filteredOrders,
-          top5Orders: filteredOrders
+          currentOrders: [...filteredOrders].sort((first, second) =>
+            dayjs(first.formattedDate).isBefore(dayjs(second.formattedDate))
+          ),
+          top5Orders: [...filteredOrders]
             .sort(
               (first, second) => second.formattedVolume - first.formattedVolume
             )
@@ -126,7 +136,11 @@ export default function Home() {
             currentTotal={state?.currentOrdersTotal}
             targetValue={state?.targets[selectedMonthIndex]?.targetValue}
           />
-          <ListingTable state={state} />
+          <ListingTable
+            currentOrders={state?.currentOrders}
+            top5Orders={state?.top5Orders}
+            ordersTotal={state?.currentOrdersTotal}
+          />
         </div>
       )}
     </div>

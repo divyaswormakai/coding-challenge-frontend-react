@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Table, ProgressBar } from "react-bootstrap";
 
-const ListingTable = ({ state }) => {
+const ListingTable = ({ currentOrders, top5Orders, ordersTotal }) => {
   return (
     <Row className="my-4 ">
       <Col xs={12} md={5}>
@@ -21,7 +21,7 @@ const ListingTable = ({ state }) => {
               <tr></tr>
             </thead>
             <tbody>
-              {state?.currentOrders?.map((order, index) => (
+              {currentOrders?.map((order, index) => (
                 <tr key={`Current order -${index}`} className="body-row">
                   <td>{order.orderNumber}</td>
                   <td>{order.orderDate}</td>
@@ -48,13 +48,13 @@ const ListingTable = ({ state }) => {
               <tr></tr>
             </thead>
             <tbody>
-              {state?.top5Orders?.map((order, index) => (
+              {top5Orders?.map((order, index) => (
                 <tr key={`Current order -${index}`} className="body-row">
                   <td width={"25%"}>{order.orderProduct?.slice(0, 15)}</td>
                   <td width={"60%"}>
                     <ProgressBar
                       now={order.formattedVolume}
-                      max={state?.currentOrdersTotal}
+                      max={ordersTotal}
                       style={{
                         backgroundColor: "transparent",
                         marginTop: 3,
