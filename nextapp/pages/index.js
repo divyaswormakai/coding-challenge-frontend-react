@@ -9,6 +9,7 @@ import Spinner from "../components/spinner";
 import ListingTable from "../components/listingtables";
 import TargetCounter from "../components/targetCounter";
 import TargetProgress from "../components/target-progress";
+import TitleBar from "../components/title-bar";
 
 export default function Home() {
   const [state, setState] = useState({
@@ -99,6 +100,10 @@ export default function Home() {
     }
   };
 
+  const handleMonthChange = (index) => {
+    setSelectedMonthIndex((previous) => (previous + index + 12) % 12);
+  };
+
   return (
     <div className="bg-black min-vh-100 min-vw-100 text-white position-relative ">
       <div className="position-absolute top-right-image">
@@ -111,46 +116,11 @@ export default function Home() {
       )}
       {state?.name === "complete" && (
         <div className=" min-vh-100  h-100 d-flex flex-column">
-          <Row className="justify-content-between align-items-center p-4 my-2">
-            <Col
-              xs={{ span: 12, order: 1 }}
-              md={{ span: 6, order: 2 }}
-              className="d-flex justify-content-start justify-content-md-end z-2"
-            >
-              <p className="fw-light text-c4">Refresh In</p>
-              <p className="fw-bold timer-text ps-1">{timer}</p>
-            </Col>
-            <Col xs={{ span: 12, order: 2 }} md={{ span: 6, order: 1 }}>
-              <p className="font-source">Order Dashboard</p>
-              <div className="d-flex align-items-center">
-                <h3 className="fw-bold target-month">
-                  {state?.targets[selectedMonthIndex]?.targetMonth}
-                </h3>
-                <div className="d-flex">
-                  <div
-                    onClick={() =>
-                      setSelectedMonthIndex((previous) =>
-                        Math.max(0, previous - 1)
-                      )
-                    }
-                    className="c-p month-select text-center mx-2"
-                  >
-                    &#8249;
-                  </div>
-                  <div
-                    onClick={() =>
-                      setSelectedMonthIndex((previous) =>
-                        Math.min(state?.targets?.length - 1, previous + 1)
-                      )
-                    }
-                    className="c-p month-select text-center mx-2"
-                  >
-                    &#8250;
-                  </div>
-                </div>
-              </div>
-            </Col>
-          </Row>
+          <TitleBar
+            timerValue={timer}
+            currentTargetMonth={state?.targets[selectedMonthIndex]?.targetMonth}
+            handleMonthChange={handleMonthChange}
+          />
           <TargetCounter value={state?.currentOrdersTotal} />
           <TargetProgress
             currentTotal={state?.currentOrdersTotal}
